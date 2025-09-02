@@ -34,6 +34,12 @@ public class TodoController {
         todoService.deleteTodo(id);
     }
 
+    @PutMapping("/check")
+    public void chechTodo(@PathVariable Long id){
+        System.out.println(id);
+//        todoService.checkTodo(id);
+    }
+
 
 
 

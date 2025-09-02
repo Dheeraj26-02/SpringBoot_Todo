@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             li.innerHTML = `
-          <p class="mb-0 ${todo.checked ? "text-decoration-line-through" : ""}">
+          <p class="mb-0 ${todo.checked ? "text-decoration-line-through" : ""}" data-id="${todo.id}">
             ${todo.title}
           </p>
           <button type="button" class="btn btn-danger btn-sm delBtn" data-id="${todo.id}">
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     list.addEventListener('click', (e) => {
         if (e.target.classList.contains('delBtn')) {
             const id = e.target.getAttribute("data-id");
-            console.log(id);
+            console.log(e.target.getAttribute("data-id"));
             
 
             fetch(`/api/todos/${id}`, {
@@ -63,7 +63,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 .catch(err => console.error("Error deleting todo:", err));
         }
     });
+     list.addEventListener('click', (e) => {
+            const id=e.target.getAttribute("data-id");
 
+            fetch(`/api/todos/check/${id}`,{
+             method: "put"
+                        })
+                            .then(() => loadTodos())
+                            .catch(err => console.error("Error deleting todo:", err));
+                    })
+     });
 });
 
 

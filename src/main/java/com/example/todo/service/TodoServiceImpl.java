@@ -54,4 +54,12 @@ public class TodoServiceImpl implements TodoService {
             return false;
         }
     }
+//    public boolean checkTodo(Long id) {
+//        Optional<TodoEntity> todoOpt = todoRepository.findById(id);
+//        if (todoOpt.isPresent()) {
+//            if(todoOpt.get().getCheck()==true){
+//                todoRepository.;
+//            }
+//        }
+//    }
 }
