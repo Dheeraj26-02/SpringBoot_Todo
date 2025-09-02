@@ -17,11 +17,10 @@ public class TodoServiceImpl implements TodoService {
     @Autowired
     TodoRepository todoRepository;
 
-
     public List<Todo> getAllTodos() {
         List<Todo> todoArray = new ArrayList<>();
 
-        List<TodoEntity> todoList = todoRepository.findAll();//getting data from database(repo) and storing in entity
+        List<TodoEntity> todoList = todoRepository.findAll();// getting data from database(repo) and storing in entity
         for (TodoEntity todoEntity : todoList) {
             Todo td = new Todo();
             td.setId(todoEntity.getId());
@@ -32,16 +31,15 @@ public class TodoServiceImpl implements TodoService {
         return todoArray;
     }
 
-
     public void addTodo(Todo td) {
         TodoEntity todoEntity = new TodoEntity();
         System.out.println(todoEntity);
-        if(td.getId()!=null){
+        if (td.getId() != null) {
             todoEntity.setId(td.getId());
         }
         todoEntity.setTitle(td.getTitle());
         todoEntity.setChecked(td.isChecked());
-        todoRepository.save(todoEntity); //saving from entity(table-model) to database(repo)
+        todoRepository.save(todoEntity); // saving from entity(table-model) to database(repo)
     }
 
     public boolean deleteTodo(Long id) {
@@ -54,12 +52,15 @@ public class TodoServiceImpl implements TodoService {
             return false;
         }
     }
-//    public boolean checkTodo(Long id) {
-//        Optional<TodoEntity> todoOpt = todoRepository.findById(id);
-//        if (todoOpt.isPresent()) {
-//            if(todoOpt.get().getCheck()==true){
-//                todoRepository.;
-//            }
-//        }
-//    }
+
+    public boolean checkTodo(Long id) {
+        Optional<TodoEntity> todoOpt = todoRepository.findById(id);
+        if (todoOpt.isPresent()) {
+            TodoEntity todo = todoOpt.get();
+            todo.setChecked(true);
+            todoRepository.save(todo);
+            return true;
+        }
+        return false;
+    }
 }

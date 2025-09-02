@@ -59,10 +59,7 @@
     </div>
     <div class="list-group" >
       <ul class="list-group" id="list">
-        <li class="list-group-item d-flex justify-content-between align-items-center" aria-current="true">
-          <p  class="mb-0">An active item</p>
-          <button type="button" class="btn btn-danger btn-sm delBtn">Delete</button>
-        </li>
+        
       </ul>
     </div>
 

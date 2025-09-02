@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/todos")
 
@@ -17,10 +16,9 @@ public class TodoController {
     @Autowired
     public TodoService todoService;
 
-
     @GetMapping
-    public List<Todo> loadData(){
-        List<Todo> todoList=todoService.getAllTodos();
+    public List<Todo> loadData() {
+        List<Todo> todoList = todoService.getAllTodos();
         return todoList;
     }
 
@@ -34,13 +32,8 @@ public class TodoController {
         todoService.deleteTodo(id);
     }
 
-    @PutMapping("/check")
-    public void chechTodo(@PathVariable Long id){
-        System.out.println(id);
-//        todoService.checkTodo(id);
+    @PutMapping("/check/{id}")
+    public void checkTodo(@PathVariable Long id) {
+        todoService.checkTodo(id);
     }
-
-
-
-
 }

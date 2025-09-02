@@ -3,6 +3,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const list = document.getElementById('list');
     const inputBox = document.getElementById('inputBox');
 
+
+    const listItems = document.querySelectorAll("li");
+
+    list.addEventListener('mouseover', (e) => {
+    const li = e.target.closest('li');
+    if (!li || !list.contains(li)) return;
+    li.classList.add('active');
+  });
+
+  list.addEventListener('mouseout', (e) => {
+    const li = e.target.closest('li');
+    if (!li || !list.contains(li)) return;
+    const to = e.relatedTarget;
+    if (to && li.contains(to)) return;
+    li.classList.remove('active');
+  });
+
+
     function loadTodos() {
         fetch("/api/todos")
             .then(response => response.json())
@@ -11,9 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loadTodos();
     function renderTodos(todos) {
-        console.log(todos);
-
-        list.innerHTML = ""; // clear old items
+        list.innerHTML = "";
         todos.forEach(todo => {
             const li = document.createElement("li");
             li.classList.add(
@@ -36,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    addBtn.addEventListener('click', () => {
+    function addTodo() {
         if (inputBox.value.trim() !== "") {
             fetch("/api/todos/add", {
                 method: "POST",
@@ -45,17 +61,20 @@ document.addEventListener("DOMContentLoaded", () => {
             })
                 .then(() => {
                     inputBox.value = "";
-                    loadTodos(); 
+                    loadTodos();
                 })
                 .catch(err => console.error("Error adding todo:", err));
+        }
+    };
+    addBtn.addEventListener('click', addTodo);
+    inputBox.addEventListener('keydown', (e) => {
+        if (e.key === "Enter") {
+            addTodo();
         }
     });
     list.addEventListener('click', (e) => {
         if (e.target.classList.contains('delBtn')) {
             const id = e.target.getAttribute("data-id");
-            console.log(e.target.getAttribute("data-id"));
-            
-
             fetch(`/api/todos/${id}`, {
                 method: "DELETE"
             })
@@ -63,16 +82,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 .catch(err => console.error("Error deleting todo:", err));
         }
     });
-     list.addEventListener('click', (e) => {
-            const id=e.target.getAttribute("data-id");
-
-            fetch(`/api/todos/check/${id}`,{
-             method: "put"
-                        })
-                            .then(() => loadTodos())
-                            .catch(err => console.error("Error deleting todo:", err));
-                    })
-     });
+    list.addEventListener('click', (e) => {
+        const id = e.target.getAttribute("data-id");
+        fetch(`/api/todos/check/${id}`, {
+            method: "put"
+        })
+            .then(() => loadTodos())
+            .catch(err => console.error("Error deleting todo:", err));
+    })
 });
-
-
